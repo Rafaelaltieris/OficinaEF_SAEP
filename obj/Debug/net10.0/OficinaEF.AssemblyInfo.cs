@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OficinaEF")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+59b3bbc52776259d46cf9a257f640d1e76b2791e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+40b53a112b03eea86c39bf9b38dc0eaf4b3678d2")]
 [assembly: System.Reflection.AssemblyProductAttribute("OficinaEF")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OficinaEF")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
