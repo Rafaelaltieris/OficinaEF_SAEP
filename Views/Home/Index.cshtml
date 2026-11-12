@@ -1,8 +1,67 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Início";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="py-4">
+    <header class="rounded-3 bg-dark text-white p-4 p-md-5 mb-4">
+        <h1 class="display-5 fw-bold mb-3">Gestão da Oficina</h1>
+        <p class="lead mb-4">
+            Organize os clientes, os equipamentos e os agendamentos da oficina.
+        </p>
+
+        <a asp-controller="Agendamentos" asp-action="Create"
+           class="btn btn-primary">
+            Novo agendamento
+        </a>
+    </header>
+
+    <div class="row row-cols-1 row-cols-md-3 g-3">
+        <div class="col">
+            <section class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column p-4">
+                    <h2 class="h5 card-title">Clientes</h2>
+                    <p class="card-text text-muted">
+                        Cadastre clientes e consulte seus dados de contato.
+                    </p>
+
+                    <a asp-controller="Clientes" asp-action="Index"
+                       class="btn btn-sm btn-outline-primary mt-auto align-self-start">
+                        Ver clientes
+                    </a>
+                </div>
+            </section>
+        </div>
+
+        <div class="col">
+            <section class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column p-4">
+                    <h2 class="h5 card-title">Equipamentos</h2>
+                    <p class="card-text text-muted">
+                        Consulte os equipamentos e veja a qual cliente cada um pertence.
+                    </p>
+
+                    <a asp-controller="Equipamentos" asp-action="Index"
+                       class="btn btn-sm btn-outline-primary mt-auto align-self-start">
+                        Ver equipamentos
+                    </a>
+                </div>
+            </section>
+        </div>
+
+        <div class="col">
+            <section class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column p-4">
+                    <h2 class="h5 card-title">Agendamentos</h2>
+                    <p class="card-text text-muted">
+                        Consulte os horários marcados e os serviços de cada agendamento.
+                    </p>
+
+                    <a asp-controller="Agendamentos" asp-action="Index"
+                       class="btn btn-sm btn-outline-primary mt-auto align-self-start">
+                        Ver agendamentos
+                    </a>
+                </div>
+            </section>
+        </div>
+    </div>
 </div>

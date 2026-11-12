@@ -2,49 +2,77 @@
 
 @{
     ViewData["Title"] = "Clientes";
+    var busca = ViewBag.Busca as string;
 }
 
-<h1>Clientes</h1>
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+    <h1 class="mb-0">Clientes</h1>
 
-<form asp-action="Index" method="get">
-    <label for="busca">Buscar pelo nome</label>
-    <input id="busca" name="busca" value="@ViewBag.Busca" />
-    <button type="submit" class="btn btn-primary">Buscar</button>
+    <a asp-action="Create" class="btn btn-primary">Novo cliente</a>
+</div>
+
+<form asp-action="Index" method="get" class="mb-4">
+    <label for="busca" class="form-label">Buscar pelo nome</label>
+
+    <div class="row g-2">
+        <div class="col-12 col-sm-6 col-lg-4">
+            <input type="search" id="busca" name="busca" value="@busca"
+                   class="form-control" />
+        </div>
+
+        <div class="col-auto">
+            <button type="submit" class="btn btn-outline-primary">Buscar</button>
+
+            @if (!string.IsNullOrWhiteSpace(busca))
+            {
+                <a asp-action="Index" class="btn btn-outline-secondary">Limpar</a>
+            }
+        </div>
+    </div>
 </form>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">
-        Novo Cliente
-    </a>
-</p>
+@if (Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">CPF</th>
+                    <th scope="col">Telefone</th>
+                    <th scope="col">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cliente in Model)
+                {
+                    <tr>
+                        <td>@cliente.Nome</td>
+                        <td>@cliente.Cpf</td>
+                        <td>@cliente.Telefone</td>
+                        <td>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a asp-action="Details" asp-route-id="@cliente.Id"
+                                   class="btn btn-sm btn-outline-secondary">Detalhes</a>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>CPF</th>
-            <th>Telefone</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Nome</td>
-                <td>@item.Cpf</td>
-                <td>@item.Telefone</td>
-                <td>
-                    <div class="d-flex flex-wrap gap-2">
-                        <a asp-action="Details" asp-route-id="@item.Id"
-                           class="btn btn-sm btn-outline-secondary">Detalhes</a>
+                                <a asp-action="Edit" asp-route-id="@cliente.Id"
+                                   class="btn btn-sm btn-outline-primary">Editar</a>
 
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Editar</a>
-
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Excluir</a>
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                                <a asp-action="Delete" asp-route-id="@cliente.Id"
+                                   class="btn btn-sm btn-outline-danger">Excluir</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p class="text-muted">
+        @(string.IsNullOrWhiteSpace(busca)
+            ? "Nenhum cliente cadastrado."
+            : "Nenhum cliente encontrado para essa busca.")
+    </p>
+}
