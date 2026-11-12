@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using OficinaEF.Models;
 
 namespace OficinaEF.Controllers
 {
+    [Authorize]
     public class EquipamentosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -53,37 +55,26 @@ namespace OficinaEF.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("Id,Tipo,Modelo,ClienteId")] Equipamento equipamento)
+            [Bind("Tipo,Modelo,ClienteId")] Equipamento equipamento)
         {
+            if (ModelState.IsValid &&
+                !await _context.Clientes.AnyAsync(c => c.Id == equipamento.ClienteId))
+            {
+                ModelState.AddModelError(
+                    nameof(Equipamento.ClienteId),
+                    "O cliente selecionado não foi encontrado.");
+            }
+
             if (ModelState.IsValid)
             {
-                _context.Add(equipamento);
+                _context.Equipamentos.Add(equipamento);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
 
             ViewData["ClienteId"] = new SelectList(
-                _context.Clientes, "Id", "Nome",
-                equipamento.ClienteId);
-
-            return View(equipamento);
-        }
-
-        // GET: Equipamentos/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-                return NotFound();
-
-            var equipamento = await _context.Equipamentos.FindAsync(id);
-
-            if (equipamento == null)
-                return NotFound();
-
-            ViewData["ClienteId"] = new SelectList(
-                _context.Clientes, "Id", "Nome",
-                equipamento.ClienteId);
+                _context.Clientes, "Id", "Nome", equipamento.ClienteId);
 
             return View(equipamento);
         }
@@ -92,22 +83,35 @@ namespace OficinaEF.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
-            int id,
-            [Bind("Id,Tipo,Modelo,ClienteId")] Equipamento equipamento)
+            [FromRoute] int id,
+            [Bind("Tipo,Modelo,ClienteId")] Equipamento equipamento)
         {
-            if (id != equipamento.Id)
+            var equipamentoBanco = await _context.Equipamentos.FindAsync(id);
+
+            if (equipamentoBanco == null)
                 return NotFound();
+
+            if (ModelState.IsValid &&
+                !await _context.Clientes.AnyAsync(c => c.Id == equipamento.ClienteId))
+            {
+                ModelState.AddModelError(
+                    nameof(Equipamento.ClienteId),
+                    "O cliente selecionado não foi encontrado.");
+            }
 
             if (ModelState.IsValid)
             {
+                equipamentoBanco.Tipo = equipamento.Tipo;
+                equipamentoBanco.Modelo = equipamento.Modelo;
+                equipamentoBanco.ClienteId = equipamento.ClienteId;
+
                 try
                 {
-                    _context.Update(equipamento);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EquipamentoExists(equipamento.Id))
+                    if (!await _context.Equipamentos.AnyAsync(e => e.Id == id))
                         return NotFound();
 
                     throw;
@@ -116,9 +120,10 @@ namespace OficinaEF.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            equipamento.Id = id;
+
             ViewData["ClienteId"] = new SelectList(
-                _context.Clientes, "Id", "Nome",
-                equipamento.ClienteId);
+                _context.Clientes, "Id", "Nome", equipamento.ClienteId);
 
             return View(equipamento);
         }

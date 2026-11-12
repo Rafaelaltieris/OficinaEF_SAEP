@@ -1,0 +1,31 @@
+@model OficinaEF.Models.Agendamento
+
+@{
+    ViewData["Title"] = "Excluir agendamento";
+    var equipamento = Model.Equipamento;
+}
+
+<h1>Excluir agendamento</h1>
+
+<p>Confirma a exclusão deste agendamento?</p>
+
+<dl class="row">
+    <dt class="col-sm-3">Data e horário</dt>
+    <dd class="col-sm-9">@(Model.Data?.ToString("dd/MM/yyyy HH:mm") ?? "—")</dd>
+
+    <dt class="col-sm-3">Serviço</dt>
+    <dd class="col-sm-9">@Model.Servico</dd>
+
+    <dt class="col-sm-3">Equipamento</dt>
+    <dd class="col-sm-9">
+        @(equipamento is null ? "—" : $"{equipamento.Tipo} - {equipamento.Modelo}")
+    </dd>
+
+    <dt class="col-sm-3">Cliente</dt>
+    <dd class="col-sm-9">@(equipamento?.Cliente?.Nome ?? "—")</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+    <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+</form>

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OficinaEF.Data; //No dia da prova,
@@ -6,6 +7,8 @@ using OficinaEF.Models;
 
 namespace OficinaEF.Controllers;
 
+
+[Authorize]
 public class ClientesController : Controller
 {
     private readonly ApplicationDbContext _context;
@@ -16,9 +19,13 @@ public class ClientesController : Controller
     }
 
     // GET: Clientes
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string busca)
     {
-        return View(await _context.Clientes.ToListAsync());
+        var consulta = _context.Clientes.AsQueryable();
+        if (!string.IsNullOrWhiteSpace(busca))
+            consulta = consulta.Where(c => c.Nome.Contains(busca));
+        ViewBag.Busca = busca;
+        return View(await consulta.OrderBy(c => c.Nome).ToListAsync());
     }
 
     // GET: Clientes/Details/5

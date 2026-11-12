@@ -9,5 +9,5 @@ public class Agendamento
     public DateTime? Data{get;set;}
     public string Servico{get;set;}
     public int EquipamentoId {get;set;}
-    public Equipamento Equipamento {get;set;}
+    public Equipamento? Equipamento {get;set;}
 }

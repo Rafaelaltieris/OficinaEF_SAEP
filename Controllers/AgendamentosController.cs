@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using OficinaEF.Models;
 
 namespace OficinaEF.Controllers
 {
+    [Authorize]
     public class AgendamentosController : Controller
     {
         private readonly ApplicationDbContext _context;

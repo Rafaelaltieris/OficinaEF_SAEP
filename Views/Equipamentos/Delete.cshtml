@@ -1,0 +1,25 @@
+@model OficinaEF.Models.Equipamento
+
+@{
+    ViewData["Title"] = "Excluir equipamento";
+}
+
+<h1>Excluir equipamento</h1>
+
+<p>Confirma a exclusão deste equipamento?</p>
+
+<dl class="row">
+    <dt class="col-sm-3">Tipo</dt>
+    <dd class="col-sm-9">@Model.Tipo</dd>
+
+    <dt class="col-sm-3">Modelo</dt>
+    <dd class="col-sm-9">@Model.Modelo</dd>
+
+    <dt class="col-sm-3">Cliente</dt>
+    <dd class="col-sm-9">@Model.Cliente.Nome</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+    <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+</form>

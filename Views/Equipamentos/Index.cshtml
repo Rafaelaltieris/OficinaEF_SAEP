@@ -1,0 +1,51 @@
+@model IEnumerable<OficinaEF.Models.Equipamento>
+
+@{
+    ViewData["Title"] = "Equipamentos";
+}
+
+<h1>Equipamentos</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Novo equipamento</a>
+</p>
+
+@if (Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Tipo</th>
+                <th scope="col">Modelo</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var equipamento in Model)
+            {
+                <tr>
+                    <td>@equipamento.Tipo</td>
+                    <td>@equipamento.Modelo</td>
+                    <td>@equipamento.Cliente.Nome</td>
+                    <td>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a asp-action="Details" asp-route-id="@equipamento.Id"
+                               class="btn btn-sm btn-outline-secondary">Detalhes</a>
+
+                            <a asp-action="Edit" asp-route-id="@equipamento.Id"
+                               class="btn btn-sm btn-outline-primary">Editar</a>
+
+                            <a asp-action="Delete" asp-route-id="@equipamento.Id"
+                               class="btn btn-sm btn-outline-danger">Excluir</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Nenhum equipamento cadastrado.</p>
+}

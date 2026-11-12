@@ -1,4 +1,3 @@
-
 @model IEnumerable<OficinaEF.Models.Cliente>
 
 @{
@@ -6,6 +5,12 @@
 }
 
 <h1>Clientes</h1>
+
+<form asp-action="Index" method="get">
+    <label for="busca">Buscar pelo nome</label>
+    <input id="busca" name="busca" value="@ViewBag.Busca" />
+    <button type="submit" class="btn btn-primary">Buscar</button>
+</form>
 
 <p>
     <a asp-action="Create" class="btn btn-primary">
@@ -30,9 +35,14 @@
                 <td>@item.Cpf</td>
                 <td>@item.Telefone</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a asp-action="Details" asp-route-id="@item.Id"
+                           class="btn btn-sm btn-outline-secondary">Detalhes</a>
+
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Editar</a>
+
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Excluir</a>
+                    </div>
                 </td>
             </tr>
         }

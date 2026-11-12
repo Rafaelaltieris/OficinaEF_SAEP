@@ -1,0 +1,62 @@
+@model IEnumerable<OficinaEF.Models.Agendamento>
+
+@{
+    ViewData["Title"] = "Agendamentos";
+}
+
+<h1>Agendamentos</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Novo agendamento</a>
+</p>
+
+@if (Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Data e horário</th>
+                <th scope="col">Serviço</th>
+                <th scope="col">Equipamento</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var agendamento in Model)
+            {
+                <tr>
+                    <td>@(agendamento.Data?.ToString("dd/MM/yyyy HH:mm") ?? "—")</td>
+                    <td>@agendamento.Servico</td>
+                    <td>
+                        @if (agendamento.Equipamento is { } equipamento)
+                        {
+                            <span>@equipamento.Tipo - @equipamento.Modelo</span>
+                        }
+                        else
+                        {
+                            <span>—</span>
+                        }
+                    </td>
+                    <td>@(agendamento.Equipamento?.Cliente?.Nome ?? "—")</td>
+                    <td>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a asp-action="Details" asp-route-id="@agendamento.Id"
+                               class="btn btn-sm btn-outline-secondary">Detalhes</a>
+
+                            <a asp-action="Edit" asp-route-id="@agendamento.Id"
+                               class="btn btn-sm btn-outline-primary">Editar</a>
+
+                            <a asp-action="Delete" asp-route-id="@agendamento.Id"
+                               class="btn btn-sm btn-outline-danger">Excluir</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Nenhum agendamento cadastrado.</p>
+}
