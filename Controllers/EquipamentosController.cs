@@ -79,6 +79,25 @@ namespace OficinaEF.Controllers
             return View(equipamento);
         }
 
+        // GET: Equipamentos/Create
+        // GET: Equipamentos/Edit/5
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var equipamento = await _context.Equipamentos.FindAsync(id.Value);
+
+            if (equipamento == null)
+                return NotFound();
+
+            ViewData["ClienteId"] = new SelectList(
+                _context.Clientes, "Id", "Nome", equipamento.ClienteId);
+
+            return View(equipamento);
+        }
+
         // POST: Equipamentos/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]

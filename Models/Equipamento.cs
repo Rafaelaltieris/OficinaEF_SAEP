@@ -7,5 +7,5 @@ public class Equipamento
     public string Tipo{get;set;}
     public string Modelo{get;set;}
     public int ClienteId {get;set;}
-    public Cliente? Cliente {get;set;}
+    public Cliente? Cliente {get;set;} //torna opcional
 }
